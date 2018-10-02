@@ -1,0 +1,68 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 63438848 bytes for committing reserved memory.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_linux.cpp:2640), pid=7477, tid=0x00007f65f17bb700
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_181-b13) (build 1.8.0_181-b13)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.181-b13 mixed mode linux-amd64 compressed oops)
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007f6604075000):  VMThread [stack: 0x00007f65f16bc000,0x00007f65f17bc000] [id=7483]
+
+Stack: [0x00007f65f16bc000,0x00007f65f17bc000],  sp=0x00007f65f17b9f20,  free space=1015k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0xad21aa]  VMError::report_and_die()+0x2ba
+V  [libjvm.so+0x5022db]  report_vm_out_of_memory(char const*, int, unsigned long, VMErrorType, char const*)+0x8b
+V  [libjvm.so+0x92fe33]  os::Linux::commit_memory_impl(char*, unsigned long, bool)+0x123
+V  [libjvm.so+0x930059]  os::pd_commit_memory(char*, unsigned long, unsigned long, bool)+0x29
+V  [libjvm.so+0x9272ba]  os::commit_memory(char*, unsigned long, unsigned long, bool)+0x2a
+V  [libjvm.so+0x99d2e3]  PSVirtualSpace::expand_by(unsigned long)+0x53
+V  [libjvm.so+0x99e6e8]  PSYoungGen::resize_generation(unsigned long, unsigned long)+0xf8
+V  [libjvm.so+0x99d842]  PSYoungGen::resize(unsigned long, unsigned long)+0x22
+V  [libjvm.so+0x99ab1b]  PSScavenge::invoke_no_policy()+0xf3b
+V  [libjvm.so+0x995dc5]  PSParallelCompact::invoke(bool)+0x85
+V  [libjvm.so+0x488e34]  CollectedHeap::collect_as_vm_thread(GCCause::Cause)+0x114
+V  [libjvm.so+0xad3631]  VM_CollectForMetadataAllocation::doit()+0x161
+V  [libjvm.so+0xadb745]  VM_Operation::evaluate()+0x55
+V  [libjvm.so+0xad9b0a]  VMThread::evaluate_operation(VM_Operation*)+0xba
+V  [libjvm.so+0xad9e8e]  VMThread::loop()+0x1ce
+V  [libjvm.so+0xada300]  VMThread::run()+0x70
+V  [libjvm.so+0x930198]  java_start(Thread*)+0x108
+
+VM_Operation (0x00007f660ad65730): CollectForMetadataAllocation, mode: safepoint, requested by thread 0x00007f660400b000
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00007f66045c1800 JavaThread "process reaper" daemon [_thread_blocked, id=7493, stack(0x00007f65f00e7000,0x00007f65f0120000)]
+  0x00007f66040bb800 JavaThread "Service Thread" daemon [_thread_blocked, id=7489, stack(0x00007f65f06e6000,0x00007f65f07e7000)]
+  0x00007f66040b9000 JavaThread "C1 CompilerThread1" daemon [_thread_blocked, id=7488, stack(0x00007f65f07e8000,0x00007f65f08e8000)]
+  0x00007f66040b6000 JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=7487, stack(0x00007f65f08e9000,0x00007f65f09e9000)]
+  0x00007f66040b4800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=7486, stack(0x00007f65f09e9000,0x00007f65f0aea000)]
+  0x00007f6604081800 JavaThread "Finalizer" daemon [_thread_blocked, id=7485, stack(0x00007f65f14b9000,0x00007f65f15ba000)]
+  0x00007f660407f000 JavaThread "Reference Handler" daemon [_thread_blocked, id=7484, stack(0x00007f65f15ba000,0x00007f65f16bb000)]
+  0x00007f660400b000 JavaThread "main" [_thread_blocked, id=7480, stack(0x00007f660ac6b000,0x00007f660ad6b000)]
+
+Other Threads:
+=>0x00007f6604075000 VMThread [stack: 0x00007f65f16bc000,0x00007f65f17bc000] [id=7483]
+  0x00007f66040c0800 WatcherThread [stack: 0x00007f65f05e6000,0x00007f65f06e6000] [id=7490]
+
+VM 

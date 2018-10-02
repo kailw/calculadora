@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ejercicio Calculadora</title>
+        <link href="estilos.css" media="all" rel="Stylesheet" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    </head>
+    <style>
+        div {
+            margin-top: 20px;
+        }
+
+        .header {
+            text-align: center;
+            font-weight: bold;
+        }
+        .botones {
+            text-align: right;
+        }      
+
+        #mensajeA, #mensajeB {
+            margin-top: 20px;
+        }
+
+        #listaoperadores {
+            margin-top: 10px;
+        }
+
+
+
+    </style>
+    <body>
+        <div class="container">               
+            <div class="header">
+                <h1>Calculadora</h1>
+            </div>
+
+            <form role="form">
+                <div class="form-group">
+                    <div class="row">  
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="operadorx"><u>Número X:</u></label>                    
+                            <input type="text" class="form-control" id="operadorx" placeholder="Introduce un número" name="operadorx" required>
+                            <div id="mensajeA" class="">
+                            </div>    
+
+                            <label for="operadory"><u>Número Y:</u></label>                    
+                            <input type="text" class="form-control" id="operadory" placeholder="Introduce un número" name="operadory" required>
+                            <div id="mensajeB" class="">
+                            </div>    
+                            <label for="operadores" id="listaoperadores"><u>Selecciona una acción:</u></label>
+                            <select class="form-control" id="operadores">
+                                <option value="sumar" selected>sumar</option>
+                                <option value="restar">restar</option>
+                                <option value="multiplicar">multiplicar</option>
+                                <option value="dividir">dividir</option>                        
+                            </select>                        
+                            <div id="alerta"></div>                        
+                            <div class="botones">
+                                <button type="button" name="enviar" value="Enviar" id="crear" class="btn btn-success" disabled="true">Calcular</button>
+                                <button id="reset" type="reset" class="btn btn-danger">Limpiar</button>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </form>                
+        </div>   
+
+
+
+        <script>
+            $(document).ready(function () {
+
+
+                function isNormalInteger(str) {
+                    return /^-?[0-9]+([.][0-9]+)?$/.test(str);
+                }
+
+
+
+                $("#operadorx").keyup(function () {
+                    if (isNormalInteger($("#operadorx").val())) {
+                        $("#mensajeA").attr("class", "alert alert-success");
+                        $("#operadorx").css("border-color", "green");
+                        $("#mensajeA").empty().append("Correcto");
+                        if (isNormalInteger($("#operadory").val())) {
+                            $("#crear").attr("disabled", false);
+                        }
+                    } else {
+                        $("#mensajeA").attr("class", "alert alert-danger");
+                        $("#mensajeA").empty().append("Solo puedes introducir números enteros y decimales");
+                        $("#operadorx").css("border-color", "red");
+                        $("#crear").attr("disabled", true);
+                    }
+                });
+                
+//                var operadores = $("#operadores").val();
+//                var e = document.getElementById("#operadores");
+//                var strUser = e.options[e.selectedIndex].value;
+                
+                $("#operadory").keyup(function () {
+                    if (isNormalInteger($("#operadory").val())) {
+                        $("#mensajeB").attr("class", "alert alert-success");
+                        $("#operadory").css("border-color", "green");
+                        $("#mensajeB").empty().append("Correcto");
+                        if (isNormalInteger($("#operadorx").val())) {
+                            $("#crear").attr("disabled", false);
+                        }
+                    } else {
+                        $("#mensajeB").attr("class", "alert alert-danger");
+                        $("#mensajeB").empty().append("Solo puedes introducir números enteros y decimales");
+                        $("#operadory").css("border-color", "red");
+                        $("#crear").attr("disabled", true);
+                    }
+                });
+
+                
+
+
+                $("#crear").click(function () {                   
+                    var operadorx = $("#operadorx").val();
+                    var operadory = $("#operadory").val();
+                    var operadores = $("#operadores").val();
+                    var url = "/p03cs/calculadora?operadorx=" + operadorx + "&operadory=" + operadory + "&operadores=" + operadores;
+
+                    $("#alerta").empty();
+                    $.ajax({
+                        url: url,
+                        cache: false,
+                        method: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $("#alerta").attr("class", "alert alert-success");
+                            $("#alerta").empty().append("<h5 style='text-align: left'>RESULTADO:</h5><h5 class=\"alert alert-success\">" + data + "</h5>");
+
+                        },
+                        error: function (error) {
+                            $("#alerta").attr("class", "alert alert-danger");
+                            $("#alerta").empty().append("<h4 style='text-align: center'>ERROR:</h4><h5 class=\"alert alert-danger\">" + error.status + ": " + error.responseText + "</h5>");
+                        }
+
+                    });
+                });
+
+
+                $("#reset").click(function () {
+                    $("#operadorx").val("");
+                    $("#operadory").val("");
+                    $("#mensajeA").attr("class", "");
+                    $("#mensajeB").attr("class", "");
+                    $("#mensajeA").empty();
+                    $("#mensajeB").empty();
+                    $("#alerta").attr("class", "");
+                    $("#alerta").empty();
+                    $("#operadorx").css("border-color", "");
+                    $("#operadory").css("border-color", "");
+                    $("#crear").attr("disabled", true);
+                    $("#crear").attr("selected", true);
+
+                });
+
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </body>
+</html>
